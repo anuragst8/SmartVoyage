@@ -1,0 +1,210 @@
+######################################## PROJECT SETUP ###################################	
+* Write 'npm create vite@latest' in terminal, then write project name as Tripzy and then select the framework as 'React' and then select language as 'JavaScript'
+* Then 'cd Tripzy' and 'npm install' to install all the dependencies.
+* Remove all the default styling from body and #root in index.css and App.css respectively.
+* Install the Tailwind CSS library 'shadcn' using the below commands
+
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+
+* Create a new file 'jsconfig.json' and paste this there
+{
+  "compilerOptions": {
+    // ...
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+    // ...
+  }
+}
+
+* Replace the code in vite.config.js with the below code
+import path from "path"
+import react from "@vitejs/plugin-react"
+import { defineConfig } from "vite"
+
+export default defineConfig({
+  plugins: [react()],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
+})
+
+* Run the CLI to install shadcn
+npx shadcn-ui@latest init
+
+Give the answers: Not using typescript, Default style, Base colour neutral, global css file is src/index.css, then simply press enter until the 'React Server Components' question, say no to that and then type yes.
+
+######################################## REACT ROUTING ###################################
+* Install the react router using 'npm install react-router-dom'. 
+* All routes will be written in main.jsx. The home route is shown below
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+  },
+]);
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <RouterProvider router={router} />
+  </React.StrictMode>
+);
+
+* Similarly add the create-trip route, before that create a new folder 'create-trip' in src and then create index.jsx in that folder and initialize the basic code in it using 'rafce'
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+  },
+  {
+    path: "/create-trip",
+    element: <CreateTrip />,
+  }
+]);
+
+######################################## LANDING PAGE ###################################
+* Create two new components in src/components/custom folder, Hero.jsx and Header.jsx
+* Header.jsx will be constant on every page so it should be added to the main.jsx file above ReactProvider
+  <React.StrictMode>
+    <Header />
+    <RouterProvider router={router} />
+  </React.StrictMode>
+
+* Hero.jsx is our landing page component, so add it to App.jsx file.
+function App() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <>
+      <Hero />
+    </>
+  );
+}
+
+* Created the header
+import React from "react";
+import { Button } from "../ui/button";
+
+const Header = () => {
+  return (
+    <div className="p-2 shadow-sm flex justify-between items-center px-5">
+      <img src="/logo.png" height={"100px"} width={"100px"} />
+      <Button>Sign In</Button>
+    </div>
+  );
+};
+
+export default Header;
+
+
+* Created the Hero component
+
+import React from "react";
+import { Button } from "../ui/button";
+
+function Hero() {
+  return (
+    <div className="flex flex-col items-center gap-9 mx-56">
+      <h1 className="font-extrabold text-[60px] text-center mt-16">
+        <span className="text-[#c72216]">Tripzy</span> <br /> Your very own AI
+        Trip Planner <br /> Handcrafted Itineraries in seconds
+      </h1>
+      <p className="text-xl text-gray-500 text-center]">
+        Your personalized trip planner and travel curator, creating custom
+        itineraries tailored to your interests and budget.
+      </p>
+      <Link to={"/create-trip"}>
+        <Button>Get Started</Button>
+      </Link>
+    </div>
+  );
+}
+
+export default Hero;
+
+######################################## TRIP BASIC INFO #########################################
+
+* Create the basic structure of /create-trip page
+import React from "react";
+
+const CreateTrip = () => {
+  return (
+    <div className="sm:px-10 md:px-32 lg:px-56 xl:px-72 px-5 mt-10">
+      <h2 className="font-bold text-3xl">Tell us your travel preferences</h2>
+      <p className="mt-3 text-gray-500 text-xl">
+        Just provide some basic information, and our trip planner will generate
+        a customized itinerary based on your preferences
+      </p>
+      <div className="mt-20"> 
+        <div>
+          <h2 className="text-xl my-3 font-medium">Enter your destination</h2>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CreateTrip;
+
+* In order to add auto-complete feature to the destination input, use react-google-places-autocomplete npm library
+
+npm install --save react-google-places-autocomplete
+
+* Then add google place autocomplete component below 'enter destination'
+<GooglePlacesAutocomplete 
+            apiKey=""
+          /> 
+
+MY api ==> AIzaSyDvb05HHNeTL5zQFY4gom1Vbc-l_7GKwrE
+
+tuber api ==> AIzaSyAJnm0Fgi-cg9He2flax0Ydc-RdcymATPs
+
+foursq api => fsq3cFrVHNABFE4a9Wk+MfXhZg3u5NCAgSfIprWfr8Cr8CA=
+
+
+
+
+Generate travel plan for Location: Indore, MP, India, for 3 days for couple with Cheap budget, Give me a Hotels options list with HotelName, HotelAddress, Price, HotelImageURL, Google maps location URL, Rating, Description, and suggest Itinerary with PlaceName, PlaceDetails, Place image URL, Location URL, ticket pricing, Time to travel each of the location for 3 days with each day plan with best time to visit in JSON format
+
+AIzaSyAhm2Lhk7kEAfRx_9S9fpSlErP5AiFmxkU
+
+143967662632-25rbic8q4f12l727p1fia65ljl8gnga5.apps.googleusercontent.com
+
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBxh2VXWa0B3XNV6KPOq_h6KdapXuXxSzw",
+  authDomain: "tripzy-e90b9.firebaseapp.com",
+  projectId: "tripzy-e90b9",
+  storageBucket: "tripzy-e90b9.appspot.com",
+  messagingSenderId: "285997267317",
+  appId: "1:285997267317:web:7fe91280df11c4e495fb3c",
+  measurementId: "G-L8404LQCRN"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+
+
+
+
+
+
+
+

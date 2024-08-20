@@ -1,0 +1,2 @@
+# Journeywiz
+ai travel planner
